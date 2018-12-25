@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <van-tabs v-model="active" type="card" animated sticky>
+    <van-tabs v-model="active" type="card" sticky @click="tabChange">
       <van-tab v-for="item in articalGames" v-bind:key="item.name" :title="item.name"></van-tab>
     </van-tabs>
     <van-list
@@ -12,7 +12,6 @@
     >
       <van-cell
         v-for="item in list"
-        :key="item.id"
         class="artical-item van-hairline--top-bottom clearfix"
       >
       <img :src="item.image_url" alt="">
@@ -48,13 +47,14 @@ export default {
         {name:'全部','appid': 1, category_id: ''},
         {name:'DOTA2','appid': 570, category_id: 2},
         {name:'CSGO','appid': 730, category_id: 1},
-        {name:'H1Z1','appid': 438080, category_id: 3},
+        {name:'H1Z1','appid': 438080, category_id: 5},
       ],
       active: 0
     }
   },
   created() {
     console.log(this.$api.getArticalList(this.params))
+    
     this.getList()
     // this.$api.getUserInfo().then(
     //   res => {
@@ -63,6 +63,12 @@ export default {
     // )
   },
   methods: {
+    tabChange (index) {
+      this.list = []
+      this.params.page = 1
+      this.params.category_id = this.articalGames[index].category_id
+      this.getList()
+    },
     readmore () {
       this.params.page += 1
       this.getList()
@@ -75,6 +81,11 @@ export default {
           self.res = res.data.data
           self.list = self.list.concat(res.data.data.list)
           self.loading = false
+          if (self.list.length >= res.data.data.count * 1) {
+            self.finished = true
+          } else {
+            self.finished = false
+          }
         }
       )
     }
@@ -84,11 +95,17 @@ export default {
 
 <style lang="scss">
   .home {
+    background: #1B1F2B;
+    height:100%;
+    padding-top:0.2rem;
     .artical-list {
       padding:0 0.2rem;
+      
       .artical-item {
-        margin-top: 0.1rem;
-        margin-bottom: 0.1rem;
+        // margin-top: 0.1rem;
+        // margin-bottom: 0.1rem;
+        border-bottom: 1px solid #454a60 !important;
+        background: transparent !important;
         img {
           width: 2.7rem;
           height:1.62rem;
@@ -99,6 +116,7 @@ export default {
             padding-top: 0.1rem;
             max-height: 0.5rem;
             margin-bottom: 0.2rem;
+            color: #fff;
           }
           div {
             max-height:1rem;
