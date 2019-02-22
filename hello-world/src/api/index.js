@@ -14,6 +14,10 @@ function getArticalList (params) {
   return vm.$http.get(zbt + '/v1/community/article/lst', {params: params})
 }
 
+function getArticalDetail (params) {
+  return vm.$http.get(zbt + '/v1/community/article/lst', {params: params})
+}
+
 export default {
     getArticalList,
 

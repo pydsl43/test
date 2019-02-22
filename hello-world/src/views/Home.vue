@@ -10,18 +10,22 @@
       @load="readmore"
       class="artical-list"
     >
-      <van-cell
-        v-for="item in list"
-        class="artical-item van-hairline--top-bottom clearfix"
-      >
-      <img :src="item.image_url" alt="">
-          <div class="fr title">
-            <p class="van-ellipsis">{{ item.title }}</p>
-            <div>
-              {{ item.overview }}
+      
+        <van-cell
+          v-for="item in list"
+          class="artical-item van-hairline--top-bottom clearfix"
+        >
+        <a :href="'https://www.zbt.com/article/' + item.id + '.html'" >
+          <img :src="item.image_url" alt="">
+            <div class="fr title">
+              <p class="van-ellipsis">{{ item.title }}</p>
+              <div>
+                {{ item.overview }}
+              </div>
             </div>
-          </div>
-      </van-cell>
+          </a>
+        </van-cell>
+      
     </van-list>
   </div>
 </template>
@@ -107,7 +111,7 @@ export default {
         border-bottom: 1px solid #454a60 !important;
         background: transparent !important;
         img {
-          width: 2.7rem;
+          width: 2.6rem;
           height:1.62rem;
         }
         .title {
