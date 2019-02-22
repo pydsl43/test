@@ -3,30 +3,32 @@
     <van-tabs v-model="active" type="card" sticky @click="tabChange">
       <van-tab v-for="item in articalGames" v-bind:key="item.name" :title="item.name"></van-tab>
     </van-tabs>
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="readmore"
-      class="artical-list"
-    >
-      
-        <van-cell
-          v-for="item in list"
-          class="artical-item van-hairline--top-bottom clearfix"
-        >
-        <a :href="'https://www.zbt.com/article/' + item.id + '.html'" >
-          <img :src="item.image_url" alt="">
-            <div class="fr title">
-              <p class="van-ellipsis">{{ item.title }}</p>
-              <div>
-                {{ item.overview }}
+    <van-pull-refresh v-model="loading" @refresh="refresh">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="readmore"
+        class="artical-list"
+      >
+        
+          <van-cell
+            v-for="item in list"
+            class="artical-item van-hairline--top-bottom clearfix"
+          >
+          <a :href="'https://www.zbt.com/article/' + item.id + '.html'" >
+            <img :src="item.image_url" alt="">
+              <div class="fr title">
+                <p class="van-ellipsis">{{ item.title }}</p>
+                <div>
+                  {{ item.overview }}
+                </div>
               </div>
-            </div>
-          </a>
-        </van-cell>
-      
-    </van-list>
+            </a>
+          </van-cell>
+        
+      </van-list>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -71,6 +73,10 @@ export default {
       this.list = []
       this.params.page = 1
       this.params.category_id = this.articalGames[index].category_id
+      this.getList()
+    },
+    refresh () {
+      this.params.page = 1
       this.getList()
     },
     readmore () {
